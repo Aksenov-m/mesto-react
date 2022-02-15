@@ -1,8 +1,7 @@
 import React from "react";
 import "../index.css";
-import logo from "../images/header-logo.svg";
 
-function Header() {
+function PopupWithForm() {
   return (
     <header className='header section page__header'>
       <img className='header__logo' src={logo} alt='Логотип места России.' />
@@ -10,4 +9,4 @@ function Header() {
   );
 }
 
-export default Header;
+export default PopupWithForm;

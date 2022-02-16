@@ -6,15 +6,6 @@ import Main from "./Main";
 import Footer from "./Footer";
 import PopupWithForm from "./PopupWithForm";
 
-// // 1 попап
-// export const popupElementEdit = document.querySelector(".popup_type_edit");
-// // 2 попап
-// export const popupElementAdd = document.querySelector(".popup_type_add");
-// // 3 попап
-// export const popupElementAvatar = document.querySelector(".popup_type_avatar");
-// // 4 попап
-// export const popupElementTrash = document.querySelector(".popup_type_trash");
-
 function App() {
   const [isEditAvatarPopupOpen, setEditAvatarPopupOpen] = React.useState(false);
   const [isEditProfilePopupOpen, setEditProfilePopupOpen] = React.useState(false);

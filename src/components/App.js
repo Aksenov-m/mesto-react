@@ -5,11 +5,14 @@ import Header from "./Header";
 import Main from "./Main";
 import Footer from "./Footer";
 import PopupWithForm from "./PopupWithForm";
+import ImagePopup from "./ImagePopup";
 
 function App() {
   const [isEditAvatarPopupOpen, setEditAvatarPopupOpen] = React.useState(false);
   const [isEditProfilePopupOpen, setEditProfilePopupOpen] = React.useState(false);
   const [isAddPlacePopupOpen, setAddPlacePopupOpen] = React.useState(false);
+  // const [isImagePopup, setImagePopup] = React.useState(false);
+  const [selectedCard, setSelectedCard] = React.useState({});
 
   function handleEditAvatarClick() {
     setEditAvatarPopupOpen(true);
@@ -27,13 +30,18 @@ function App() {
     setAddPlacePopupOpen(false);
     setEditProfilePopupOpen(false);
     setEditAvatarPopupOpen(false);
+    setSelectedCard({});
+  }
+
+  function handleCardClick(data) {
+    setSelectedCard(data);
   }
 
   return (
     <div className='App'>
       <div className='page__container'>
         <Header />
-        <Main onEditAvatar={handleEditAvatarClick} onEditProfile={handleEditProfileClick} onAddPlace={handleAddPlaceClick} />
+        <Main onEditAvatar={handleEditAvatarClick} onEditProfile={handleEditProfileClick} onAddPlace={handleAddPlaceClick} onCardClick={handleCardClick} />
         <Footer />
         <PopupWithForm name='edit' title='Редактировать профиль' buttonText='Сохранить' isOpen={isEditProfilePopupOpen} onClose={closeAllPopups}>
           <input id='popup__name' name='userName' className='popup__input popup__input_string_name' type='text' placeholder='Имя' required autocomplete='off' minlength='2' maxlength='40' />
@@ -51,6 +59,7 @@ function App() {
           <input id='popup__avatar' name='avatarlink' className='popup__input popup__input_string_avatar-link' type='url' placeholder='Ссылка на картинку' required autocomplete='off' />
           <span className='popup__input-error popup__avatar-error'></span>
         </PopupWithForm>
+        <ImagePopup onClose={closeAllPopups} cardInfo={selectedCard} />
       </div>
     </div>
   );

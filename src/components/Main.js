@@ -1,6 +1,5 @@
 import React from "react";
 import "../index.css";
-// import avatar from "../images/Profile_Avatar.jpg";
 import api from "../../src/utils/api";
 import Card from "./Card";
 
@@ -39,8 +38,8 @@ function Main(props) {
         <button className='profile__add-button link' type='button' aria-label='addCard' onClick={props.onAddPlace}></button>
       </section>
       <section className='cards section content__section' aria-label='Карточки мест'>
-        {cards.map((item) => {
-          return <Card key={item._id} {...item} />;
+        {cards.map((cardInfo) => {
+          return <Card key={cardInfo._id} info={cardInfo} onCardClick={props.onCardClick} />;
         })}
       </section>
     </main>

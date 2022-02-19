@@ -1,16 +1,15 @@
-import React from "react";
-import "../index.css";
+import React, { useState, useEffect } from "react";
 import api from "../../src/utils/api";
 import Card from "./Card";
 
 // Функциональный компонент Main
 function Main(props) {
-  const [userName, setUserName] = React.useState("Жак-Ив Кусто");
-  const [userDescription, setUserDescription] = React.useState("Исследователь океана");
-  const [userAvatar, setUserAvatar] = React.useState("");
-  const [cards, setCards] = React.useState([]);
+  const [userName, setUserName] = useState("Жак-Ив Кусто");
+  const [userDescription, setUserDescription] = useState("Исследователь океана");
+  const [userAvatar, setUserAvatar] = useState("");
+  const [cards, setCards] = useState([]);
 
-  React.useEffect(() => {
+  useEffect(() => {
     api
       .getAllData()
       .then(([data, user]) => {
@@ -33,14 +32,24 @@ function Main(props) {
             <h1 className='profile__name'>{userName}</h1>
             <p className='profile__job'>{userDescription}</p>
           </div>
-          <button className='profile__edit-button link' type='button' aria-label='popupEdit' onClick={props.onEditProfile}></button>
+          <button
+            className='profile__edit-button link'
+            type='button'
+            aria-label='popupEdit'
+            onClick={props.onEditProfile}
+          ></button>
         </div>
-        <button className='profile__add-button link' type='button' aria-label='addCard' onClick={props.onAddPlace}></button>
+        <button
+          className='profile__add-button link'
+          type='button'
+          aria-label='addCard'
+          onClick={props.onAddPlace}
+        ></button>
       </section>
       <section className='cards section content__section' aria-label='Карточки мест'>
-        {cards.map((cardInfo) => {
-          return <Card key={cardInfo._id} info={cardInfo} onCardClick={props.onCardClick} />;
-        })}
+        {cards.map((cardInfo) => (
+          <Card key={cardInfo._id} info={cardInfo} onCardClick={props.onCardClick} />
+        ))}
       </section>
     </main>
   );

@@ -20,7 +20,7 @@ export class Api {
     }).then(onError);
   }
 
-  getInitialUsers() {
+  getUserInfo() {
     return fetch(`${this._url}/users/me`, {
       method: "GET",
       headers: this._headers,
@@ -51,7 +51,7 @@ export class Api {
   }
 
   getAllData() {
-    return Promise.all([this.getInitialCards(), this.getInitialUsers()]);
+    return Promise.all([this.getInitialCards(), this.getUserInfo()]);
   }
   // Добавление новой карточки
   createCard(data) {

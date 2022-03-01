@@ -1,21 +1,27 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useContext } from "react";
 import api from "../../src/utils/api";
 import Card from "./Card";
+import { CurrentUserContext } from "../contexts/CurrentUserContext";
 
 // Функциональный компонент Main
 function Main(props) {
-  const [userName, setUserName] = useState("Жак-Ив Кусто");
-  const [userDescription, setUserDescription] = useState("Исследователь океана");
-  const [userAvatar, setUserAvatar] = useState("");
+  const currentUser = useContext(CurrentUserContext);
   const [cards, setCards] = useState([]);
+
+  function handleCardLike(card) {
+    // Снова проверяем, есть ли уже лайк на этой карточке
+    const isLiked = card.likes.some((i) => i._id === currentUser._id);
+
+    // Отправляем запрос в API и получаем обновлённые данные карточки
+    api.changeLikeCardStatus(card._id, !isLiked).then((newCard) => {
+      setCards((state) => state.map((c) => (c._id === card._id ? newCard : c)));
+    });
+  }
 
   useEffect(() => {
     api
-      .getAllData()
-      .then(([data, user]) => {
-        setUserName(user.name);
-        setUserDescription(user.about);
-        setUserAvatar(user.avatar);
+      .getInitialCards()
+      .then((data) => {
         setCards(data);
       })
       .catch((err) => alert(err));
@@ -26,11 +32,16 @@ function Main(props) {
       <section className='profile section content__section'>
         <div className='profile__content'>
           <div className='profile__avatar'>
-            <img className='profile__avatar-icon link' src={userAvatar} alt='Аватар.' onClick={props.onEditAvatar} />
+            <img
+              className='profile__avatar-icon link'
+              src={currentUser.avatar}
+              alt='Аватар.'
+              onClick={props.onEditAvatar}
+            />
           </div>
           <div className='profile__info'>
-            <h1 className='profile__name'>{userName}</h1>
-            <p className='profile__job'>{userDescription}</p>
+            <h1 className='profile__name'>{currentUser.name}</h1>
+            <p className='profile__job'>{currentUser.about}</p>
           </div>
           <button
             className='profile__edit-button link'

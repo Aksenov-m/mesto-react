@@ -88,6 +88,14 @@ export class Api {
       headers: this._headers,
     }).then(onError);
   }
+  // обновлённые данные лайка
+  changeLikeCardStatus(data, isLiked) {
+    if (isLiked) {
+      return this.likeCard(data);
+    } else {
+      return this.deleteLikeCard(data);
+    }
+  }
 }
 
 // создание экземпляра класса Api

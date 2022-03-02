@@ -13,8 +13,15 @@ function Main(props) {
     const isLiked = card.likes.some((i) => i._id === currentUser._id);
 
     // Отправляем запрос в API и получаем обновлённые данные карточки
-    api.changeLikeCardStatus(card._id, !isLiked).then((newCard) => {
+    api.changeLikeCardStatus(card, !isLiked).then((newCard) => {
       setCards((state) => state.map((c) => (c._id === card._id ? newCard : c)));
+    });
+  }
+
+  function handleCardDelete(card) {
+    // Отправляем запрос в API и получаем обновлённые данные без удалённой карточки
+    api.deleteCard(card).then(() => {
+      setCards((state) => state.filter((cardDelete) => cardDelete._id != card._id));
     });
   }
 
@@ -59,7 +66,13 @@ function Main(props) {
       </section>
       <section className='cards section content__section' aria-label='Карточки мест'>
         {cards.map((cardInfo) => (
-          <Card key={cardInfo._id} info={cardInfo} onCardClick={props.onCardClick} />
+          <Card
+            key={cardInfo._id}
+            info={cardInfo}
+            onCardClick={props.onCardClick}
+            onCardLike={handleCardLike}
+            onCardDelete={handleCardDelete}
+          />
         ))}
       </section>
     </main>

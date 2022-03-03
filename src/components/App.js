@@ -4,6 +4,7 @@ import Main from "./Main";
 import Footer from "./Footer";
 import PopupWithForm from "./PopupWithForm";
 import ImagePopup from "./ImagePopup";
+import EditProfilePopup from "./EditProfilePopup";
 import api from "../../src/utils/api";
 import { CurrentUserContext } from "../contexts/CurrentUserContext";
 
@@ -48,6 +49,13 @@ function App() {
     setSelectedCard(data);
   }
 
+  function handleUpdateUser(data) {
+    api.setUserInfo(data).then((data) => {
+      setСurrentUser(data);
+      closeAllPopups();
+    });
+  }
+
   return (
     <div className='App'>
       <CurrentUserContext.Provider value={currentUser}>
@@ -60,38 +68,7 @@ function App() {
             onCardClick={handleCardClick}
           />
           <Footer />
-          <PopupWithForm
-            name='edit'
-            title='Редактировать профиль'
-            buttonText='Сохранить'
-            isOpen={isEditProfilePopupOpen}
-            onClose={closeAllPopups}
-          >
-            <input
-              id='popup__name'
-              name='userName'
-              className='popup__input popup__input_string_name'
-              type='text'
-              placeholder='Имя'
-              required
-              autoComplete='off'
-              minLength='2'
-              maxLength='40'
-            />
-            <span className='popup__input-error popup__name-error'></span>
-            <input
-              id='popup__job'
-              name='userJob'
-              className='popup__input popup__input_string_job'
-              type='text'
-              placeholder='О себе'
-              required
-              autoComplete='off'
-              minLength='2'
-              maxLength='200'
-            />
-            <span className='popup__input-error popup__job-error'></span>
-          </PopupWithForm>
+          <EditProfilePopup isOpen={isEditProfilePopupOpen} onClose={closeAllPopups} onUpdateUser={handleUpdateUser} />
           <PopupWithForm
             name='add'
             title='Новое место'

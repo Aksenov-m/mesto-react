@@ -5,6 +5,7 @@ import Footer from "./Footer";
 import PopupWithForm from "./PopupWithForm";
 import ImagePopup from "./ImagePopup";
 import EditProfilePopup from "./EditProfilePopup";
+import EditAvatarPopup from "./EditAvatarPopup";
 import api from "../../src/utils/api";
 import { CurrentUserContext } from "../contexts/CurrentUserContext";
 
@@ -56,6 +57,13 @@ function App() {
     });
   }
 
+  function handleUpdateAvatar(data) {
+    api.editAvatar(data).then((data) => {
+      setСurrentUser(data);
+      closeAllPopups();
+    });
+  }
+
   return (
     <div className='App'>
       <CurrentUserContext.Provider value={currentUser}>
@@ -99,24 +107,11 @@ function App() {
             />
             <span className='popup__input-error popup__link-error'></span>
           </PopupWithForm>
-          <PopupWithForm
-            name='avatar'
-            title='Обновить аватар'
-            buttonText='Создать'
+          <EditAvatarPopup
             isOpen={isEditAvatarPopupOpen}
             onClose={closeAllPopups}
-          >
-            <input
-              id='popup__avatar'
-              name='avatarlink'
-              className='popup__input popup__input_string_avatar-link'
-              type='url'
-              placeholder='Ссылка на картинку'
-              required
-              autoComplete='off'
-            />
-            <span className='popup__input-error popup__avatar-error'></span>
-          </PopupWithForm>
+            onUpdateAvatar={handleUpdateAvatar}
+          />
           <ImagePopup onClose={closeAllPopups} cardInfo={selectedCard} />
         </div>
       </CurrentUserContext.Provider>

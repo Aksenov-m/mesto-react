@@ -85,16 +85,22 @@ function App() {
   }
 
   function handleUpdateAvatar(data) {
-    api.editAvatar(data).then((data) => {
-      setСurrentUser(data);
-      closeAllPopups();
-    });
+    api
+      .editAvatar(data)
+      .then((data) => {
+        setСurrentUser(data);
+        closeAllPopups();
+      })
+      .catch((err) => alert(err));
   }
   function handleAddPlaceSubmit(data) {
-    api.createCard(data).then((newCard) => {
-      setCards([newCard, ...cards]);
-      closeAllPopups();
-    });
+    api
+      .createCard(data)
+      .then((newCard) => {
+        setCards([newCard, ...cards]);
+        closeAllPopups();
+      })
+      .catch((err) => alert(err));
   }
 
   return (

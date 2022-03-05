@@ -21,16 +21,22 @@ function App() {
     const isLiked = card.likes.some((i) => i._id === currentUser._id);
 
     // Отправляем запрос в API и получаем обновлённые данные карточки
-    api.changeLikeCardStatus(card, !isLiked).then((newCard) => {
-      setCards((state) => state.map((c) => (c._id === card._id ? newCard : c)));
-    });
+    api
+      .changeLikeCardStatus(card, !isLiked)
+      .then((newCard) => {
+        setCards((state) => state.map((c) => (c._id === card._id ? newCard : c)));
+      })
+      .catch((err) => alert(err));
   }
 
   function handleCardDelete(card) {
     // Отправляем запрос в API и получаем обновлённые данные без удалённой карточки
-    api.deleteCard(card).then(() => {
-      setCards((state) => state.filter((cardDelete) => cardDelete._id != card._id));
-    });
+    api
+      .deleteCard(card)
+      .then(() => {
+        setCards((state) => state.filter((cardDelete) => cardDelete._id !== card._id));
+      })
+      .catch((err) => alert(err));
   }
 
   useEffect(() => {
@@ -78,10 +84,13 @@ function App() {
   }
 
   function handleUpdateUser(data) {
-    api.setUserInfo(data).then((data) => {
-      setСurrentUser(data);
-      closeAllPopups();
-    });
+    api
+      .setUserInfo(data)
+      .then((data) => {
+        setСurrentUser(data);
+        closeAllPopups();
+      })
+      .catch((err) => alert(err));
   }
 
   function handleUpdateAvatar(data) {

@@ -15,6 +15,10 @@ function App() {
   const [isAddPlacePopupOpen, setAddPlacePopupOpen] = useState(false);
   const [selectedCard, setSelectedCard] = useState({});
   const [cards, setCards] = useState([]);
+  // Стейт, отвечающий за данные текущего пользователя
+  const [currentUser, setСurrentUser] = useState({ name: "Жак-Ив Кусто", about: "Исследователь океана", avatar: " " });
+  // Стейт, отвечающий за индикацию отправки запроса для кнопки модальных окон
+  const [isLoading, setIsLoading] = useState(false);
 
   function handleCardLike(card) {
     // Снова проверяем, есть ли уже лайк на этой карточке
@@ -47,9 +51,6 @@ function App() {
       })
       .catch((err) => alert(err));
   }, []);
-
-  // Стейт, отвечающий за данные текущего пользователя
-  const [currentUser, setСurrentUser] = useState({ name: "Жак-Ив Кусто", about: "Исследователь океана", avatar: " " });
 
   useEffect(() => {
     api
@@ -84,32 +85,46 @@ function App() {
   }
 
   function handleUpdateUser(data) {
+    debugger;
+    setIsLoading(true);
     api
       .setUserInfo(data)
       .then((data) => {
         setСurrentUser(data);
         closeAllPopups();
       })
-      .catch((err) => alert(err));
+      .catch((err) => alert(err))
+      .finally(() => {
+        setIsLoading(false);
+      });
   }
 
   function handleUpdateAvatar(data) {
+    setIsLoading(true);
     api
       .editAvatar(data)
       .then((data) => {
         setСurrentUser(data);
         closeAllPopups();
       })
-      .catch((err) => alert(err));
+      .catch((err) => alert(err))
+      .finally(() => {
+        setIsLoading(false);
+      });
   }
+
   function handleAddPlaceSubmit(data) {
+    setIsLoading(true);
     api
       .createCard(data)
       .then((newCard) => {
         setCards([newCard, ...cards]);
         closeAllPopups();
       })
-      .catch((err) => alert(err));
+      .catch((err) => alert(err))
+      .finally(() => {
+        setIsLoading(false);
+      });
   }
 
   return (
@@ -127,12 +142,23 @@ function App() {
             onCardDelete={handleCardDelete}
           />
           <Footer />
-          <EditProfilePopup isOpen={isEditProfilePopupOpen} onClose={closeAllPopups} onUpdateUser={handleUpdateUser} />
-          <AddPlacePopup onClose={closeAllPopups} isOpen={isAddPlacePopupOpen} onAddPlace={handleAddPlaceSubmit} />
+          <EditProfilePopup
+            isOpen={isEditProfilePopupOpen}
+            onClose={closeAllPopups}
+            onUpdateUser={handleUpdateUser}
+            isLoading={isLoading}
+          />
+          <AddPlacePopup
+            onClose={closeAllPopups}
+            isOpen={isAddPlacePopupOpen}
+            onAddPlace={handleAddPlaceSubmit}
+            isLoading={isLoading}
+          />
           <EditAvatarPopup
             isOpen={isEditAvatarPopupOpen}
             onClose={closeAllPopups}
             onUpdateAvatar={handleUpdateAvatar}
+            isLoading={isLoading}
           />
           <ImagePopup onClose={closeAllPopups} cardInfo={selectedCard} />
         </div>

@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import PopupWithForm from "./PopupWithForm";
+import Popup from "./Popup";
 
 function AddPlacePopup(props) {
   const [nameCard, setName] = useState("");
@@ -30,13 +30,15 @@ function AddPlacePopup(props) {
   }
 
   return (
-    <PopupWithForm
+    <Popup
       name='add'
       title='Новое место'
       buttonText='Создать'
+      loadingButtonText='Создать'
       isOpen={props.isOpen}
       onClose={props.onClose}
       onSubmit={handleSubmit}
+      isLoading={props.isLoading}
     >
       <input
         id='popup__image'
@@ -64,7 +66,7 @@ function AddPlacePopup(props) {
         value={linkCard}
       />
       <span className='popup__input-error popup__link-error'></span>
-    </PopupWithForm>
+    </Popup>
   );
 }
 

@@ -1,5 +1,5 @@
 import React, { useState, useEffect, useContext } from "react";
-import PopupWithForm from "./PopupWithForm";
+import Popup from "./Popup";
 import { CurrentUserContext } from "../contexts/CurrentUserContext";
 
 function EditProfilePopup(props) {
@@ -34,13 +34,15 @@ function EditProfilePopup(props) {
   }
 
   return (
-    <PopupWithForm
+    <Popup
       name='edit'
       title='Редактировать профиль'
       buttonText='Сохранить'
+      loadingButtonText='Сохранение...'
       isOpen={props.isOpen}
       onClose={props.onClose}
       onSubmit={handleSubmit}
+      isLoading={props.isLoading}
     >
       <input
         id='popup__name'
@@ -70,7 +72,7 @@ function EditProfilePopup(props) {
         onChange={handleChangeDescription}
       />
       <span className='popup__input-error popup__job-error'></span>
-    </PopupWithForm>
+    </Popup>
   );
 }
 
